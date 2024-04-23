@@ -12,14 +12,15 @@ let currentLocation = locations[player.location]
 let options = []
 
 const clearOptions = () => {
-	const callback = () => setLocation(locations[player.location].key, false)
+	const callback = (clear = false) => setLocation(locations[player.location].key, clear)
 	options = [
 		player.getStatOption(callback),
 		{ key: 'q', name: 'opuść', do: callback},
 		saveManager.getOption(() => { 
 			saveManager.save(player)
 			callback();
-		})
+		}),
+		{ key: 'space', name: 'Rozglądaj się', do: () => callback(true)}
 	]
 }
 
@@ -32,19 +33,24 @@ const displayOptions = () => {
 
 const setLocation = (location, clear = true) => {
 	
-	if(clear)
-		console.log('Zmiana lokacji...')
+	if(clear) {
+		console.log('+-------------------+')
+		console.log('| Zmiana lokacji... |')
+		console.log('+-------------------+')
+	}
 	
 	setTimeout(() => {
 		if(clear)
 			console.clear()
 		
-			player.location = location;
+		player.location = location;
 		currentLocation = locations[location]
 		
 		clearOptions();
-		console.log(currentLocation.name)
+		console.log('=========================')
+		console.log('Lokacja: ' + currentLocation.name)
 		console.log(currentLocation.description)
+		console.log('=========================')
 		for(let i = 0; i <= currentLocation.routes.length - 1; i++) {
 			options.push({ 
 				key: i, 

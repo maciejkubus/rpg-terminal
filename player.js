@@ -1,5 +1,6 @@
 const utils = require('./utils')
-class Player {
+const Entity = require('./entity')
+class Player extends Entity {
 	health = 100;
 	maxHealth = 100;
 	strength = 10;
@@ -8,6 +9,10 @@ class Player {
 	name = ""
 	learningPoints = 0;
 	location = 'village';
+
+	constructor() {
+		super(100, 10, 10, 10)
+	}
 
 	displayStat() {
 		console.log('Imię: ' + this.name)
@@ -26,13 +31,6 @@ class Player {
 		}}
 	}
 
-	getDamage() {
-		const base = this.strength;
-		const crit = 1 + (this.dexterity/100) + (utils.random(0, 25)/100)
-		const dmg = base * crit;
-
-		return dmg;
-	}
 }
 
 module.exports = Player

@@ -3,6 +3,7 @@ const PlayerCreator = require('./player-creator')
 const Player = require('./player')
 const locations = require('./locations')
 const SaveManager = require('./save-manager')
+const utils = require('./utils')
 
 const saveManager = new SaveManager();
 const playerCreator = new PlayerCreator()
@@ -14,18 +15,32 @@ let options = []
 const clearOptions = () => {
 	const callback = (clear = false) => setLocation(locations[player.location].key, clear)
 	options = [
-		player.getStatOption(callback),
+		player.getStatOption(),
 		{ key: 'q', name: 'opuść', do: callback},
 		saveManager.getOption(() => { 
 			saveManager.save(player)
 			callback();
 		}),
-		{ key: 'space', name: 'Rozglądaj się', do: () => callback(true)}
+		{ key: 'z', name: 'Rozglądaj się', do: () => callback(true)},
+		{ key: 'space', name: 'Dalej', do: displayOptions}
 	]
 }
 
 const displayOptions = () => {
-	console.log('')
+	clearOptions();
+	console.log('=========================')
+	console.log('Lokacja: ' + currentLocation.name)
+	console.log(currentLocation.description)
+	console.log('=========================')
+
+	for(let i = 0; i <= currentLocation.routes.length - 1; i++) {
+		options.push({ 
+			key: i, 
+			name: locations[currentLocation.routes[i]].name, 
+			do: () => setLocation(currentLocation.routes[i]) 
+		})
+	}
+	
 	options.forEach(option => {
 		console.log('[' + option.key + '] - ' + option.name)
 	})
@@ -46,18 +61,6 @@ const setLocation = (location, clear = true) => {
 		player.location = location;
 		currentLocation = locations[location]
 		
-		clearOptions();
-		console.log('=========================')
-		console.log('Lokacja: ' + currentLocation.name)
-		console.log(currentLocation.description)
-		console.log('=========================')
-		for(let i = 0; i <= currentLocation.routes.length - 1; i++) {
-			options.push({ 
-				key: i, 
-				name: locations[currentLocation.routes[i]].name, 
-				do: () => setLocation(currentLocation.routes[i]) 
-			})
-		}
 		displayOptions();
 	}, clear ? 1000 : 0)
 } 

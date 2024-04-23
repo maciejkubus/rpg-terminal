@@ -8,7 +8,18 @@ class SaveManager {
 	}
 
 	save(player) {
-		const { health, maxHealth, strength, dexterity, inteligence, name, learningPoints, location } = player
+		const { 
+			health,
+			maxHealth,
+			strength,
+			dexterity,
+			inteligence,
+			name,
+			learningPoints,
+			location,
+			experience,
+			level
+		} = player
 		fs.writeFileSync(this.filename, JSON.stringify({
 			health,
 			maxHealth,
@@ -17,7 +28,9 @@ class SaveManager {
 			inteligence,
 			name,
 			learningPoints,
-			location
+			location,
+			experience,
+			level
 		}))
 	}
 

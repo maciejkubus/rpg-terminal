@@ -4,6 +4,8 @@ const Player = require('./player')
 const locations = require('./locations')
 const SaveManager = require('./save-manager')
 const utils = require('./utils')
+const Fight = require('./fight')
+const monsterSpawner = require('./monster-spawner')
 
 const saveManager = new SaveManager();
 const playerCreator = new PlayerCreator()
@@ -12,7 +14,7 @@ const player = new Player();
 let currentLocation = locations[player.location]
 let options = []
 
-const clearOptions = () => {
+const displayOptions = () => {
 	const callback = (clear = false) => setLocation(locations[player.location].key, clear)
 	options = [
 		player.getStatOption(),
@@ -24,10 +26,7 @@ const clearOptions = () => {
 		{ key: 'z', name: 'Rozglądaj się', do: () => callback(true)},
 		{ key: 'space', name: 'Dalej', do: displayOptions}
 	]
-}
 
-const displayOptions = () => {
-	clearOptions();
 	console.log('=========================')
 	console.log('Lokacja: ' + currentLocation.name)
 	console.log(currentLocation.description)
@@ -40,7 +39,7 @@ const displayOptions = () => {
 			do: () => setLocation(currentLocation.routes[i]) 
 		})
 	}
-	
+
 	options.forEach(option => {
 		console.log('[' + option.key + '] - ' + option.name)
 	})
@@ -53,15 +52,45 @@ const setLocation = (location, clear = true) => {
 		console.log('| Zmiana lokacji... |')
 		console.log('+-------------------+')
 	}
-	
+
 	setTimeout(() => {
 		if(clear)
 			console.clear()
-		
+	
 		player.location = location;
 		currentLocation = locations[location]
+
+		const fightChance = currentLocation.monsterChance * 100
+		const fight = utils.random(0, 100) <= fightChance;
+
+		if(fight) {
+			const monsterType = monsterSpawner.randomMonsterFromLocation(currentLocation);
+			const monster = monsterSpawner.create(monsterType);
+			const fight = new Fight(player, monster)
+			fight.setOnEnd( () => {
+				fight.setShowOptions(() => {})
+
+				options = [
+					{ key: 'space', name: 'Opuść walkę.', do: displayOptions }
+				]
+				
+				options.forEach(option => {
+					console.log('[' + option.key + '] - ' + option.name)
+				})
+
+			});
+			fight.setShowOptions(() => {
+				options = fight.getOptions();
+				options.forEach(option => {
+					console.log('[' + option.key + '] - ' + option.name)
+				})
+			})
+			fight.play()
+		}
+		else {
+			displayOptions();
+		}
 		
-		displayOptions();
 	}, clear ? 1000 : 0)
 } 
 

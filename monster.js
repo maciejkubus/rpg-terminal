@@ -3,8 +3,9 @@ const Entity = require('./entity')
 class Monster extends Entity {
 	experience = 0;
 
-	constructor(hp, str, dex, int, exp) {
+	constructor(name, hp, str, dex, int, exp) {
 		super(hp, str, dex, int)
+		this.name = name
 		this.experience = exp
 	}
 }

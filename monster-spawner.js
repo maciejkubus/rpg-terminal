@@ -2,15 +2,16 @@ const utils = require('./utils')
 const Monster = require('./monster');
 
 const monsterSpawner = {
-	randomMonster(types) {
+	randomMonster(monsters) {
 		let options = [];
-		types.forEach(type => {
+		monsters.forEach(monster => {
+			const type = monsterSpawner.getType(monster)
 			for (let i = 0; i < type.chance; i++) {
-				options.push(type.name)
+				options.push(type)
 			}
 		})
 		const randomIndex = utils.random(0, options.length - 1);
-		const choice = options[randomIndex].name;
+		const choice = options[randomIndex];
 		return choice;
 	},
 	randomMonsterFromLocation(location) {
@@ -18,10 +19,11 @@ const monsterSpawner = {
 	},
 	getType(key) {
 		return monsterSpawner.types.find(t => t.name == key)
+		
 	},
-	create(name) {
-		const type = monsterSpawner.getType(name);
+	create(type) {
 		const monster = new Monster(
+			type.name,
 			utils.random(type.health.min, type.health.max),
 			utils.random(type.strength.min, type.strength.max),
 			utils.random(type.dexterity.min, type.dexterity.max),

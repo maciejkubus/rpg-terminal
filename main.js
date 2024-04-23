@@ -23,8 +23,7 @@ const displayOptions = () => {
 			saveManager.save(player)
 			callback();
 		}),
-		{ key: 'z', name: 'Rozglądaj się', do: () => callback(true)},
-		{ key: 'space', name: 'Dalej', do: displayOptions}
+		{ key: 'space', name: 'Rozglądaj się', do: () => callback(true)},
 	]
 
 	console.log('=========================')
@@ -41,7 +40,7 @@ const displayOptions = () => {
 	}
 
 	options.forEach(option => {
-		console.log('[' + option.key + '] - ' + option.name)
+		console.log(utils.formatKey(option.key) + option.name)
 	})
 }
 
@@ -64,9 +63,12 @@ const setLocation = (location, clear = true) => {
 		const fight = utils.random(0, 100) <= fightChance;
 
 		if(fight) {
+			options = []
+			
 			const monsterType = monsterSpawner.randomMonsterFromLocation(currentLocation);
 			const monster = monsterSpawner.create(monsterType);
 			const fight = new Fight(player, monster)
+
 			fight.setOnEnd( () => {
 				fight.setShowOptions(() => {})
 
@@ -75,16 +77,18 @@ const setLocation = (location, clear = true) => {
 				]
 				
 				options.forEach(option => {
-					console.log('[' + option.key + '] - ' + option.name)
+					console.log(utils.formatKey(option.key) + option.name)
 				})
 
 			});
+
 			fight.setShowOptions(() => {
 				options = fight.getOptions();
 				options.forEach(option => {
-					console.log('[' + option.key + '] - ' + option.name)
+					console.log(utils.formatKey(option.key) + option.name)
 				})
 			})
+
 			fight.play()
 		}
 		else {

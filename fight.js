@@ -33,10 +33,9 @@ class Fight {
 	}
 
 	getOptions() {
-		if(this.over) 
+		if(this.over || this.turn == 'wait') 
 			return []
-
-		if(this.turn == 'enemy') {
+		else if(this.turn == 'enemy') {
 			return [
 				{ key: 'space', name: 'Dalej', do: this.play.bind(this) }
 			]
@@ -80,7 +79,7 @@ class Fight {
 		console.clear()
 		this.display()
 		if(effect.dodge)
-			console.log('['+ this.enemy.name +'] uniknął ' + chosenAbility.name + '(' + Math.floor(effect.damage) + ') obrażeń.')
+			console.log('['+ this.enemy.name +'] uniknął ataku (' + Math.floor(effect.damage) + ') obrażeń.')
 		else
 			console.log('['+ this.player.name +'] zadał ' + Math.floor(effect.damage) + ' obrażeń.')
 		

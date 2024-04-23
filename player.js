@@ -1,5 +1,4 @@
 const utils = require('./utils')
-
 class Player {
 	health = 100;
 	maxHealth = 100;

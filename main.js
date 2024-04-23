@@ -2,7 +2,9 @@ const readline = require('readline')
 const PlayerCreator = require('./player-creator')
 const Player = require('./player')
 const locations = require('./locations')
+const SaveManager = require('./save-manager')
 
+const saveManager = new SaveManager();
 const playerCreator = new PlayerCreator()
 const player = new Player();
 
@@ -13,7 +15,11 @@ const clearOptions = () => {
 	const callback = () => setLocation(locations[player.location].key, false)
 	options = [
 		player.getStatOption(callback),
-		{ key: 'q', name: 'opuść', do: callback}
+		{ key: 'q', name: 'opuść', do: callback},
+		saveManager.getOption(() => { 
+			saveManager.save(player)
+			callback();
+		})
 	]
 }
 
@@ -47,7 +53,7 @@ const setLocation = (location, clear = true) => {
 			})
 		}
 		displayOptions();
-	}, 1000)
+	}, clear ? 1000 : 0)
 } 
 
 const main = () => {
@@ -78,7 +84,16 @@ const main = () => {
 		player.inteligence = data.inteligence;
 		setLocation('village')
 	})
-	playerCreator.askName()
+	if(saveManager.loadingAvailable()){
+		const data = saveManager.load();
+		for (const key in data) {
+			player[key] = data[key];
+		}
+		setLocation(player.location)
+	}
+	else {
+		playerCreator.askName()
+	}
 }
 
 main();

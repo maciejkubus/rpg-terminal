@@ -15,21 +15,21 @@ class Fight {
 	}
 
 	display() {
-		console.log(utils.getSpaces(64, '+-------------'  + (this.turn == 'player' ? ' [TURA]' : ''), (this.turn == 'enemy' ? '[TURA] ' : '') + '-------------+'))
-		console.log(utils.getSpaces(64, '| ' + this.player.name, this.enemy.name + ' |') )
-		console.log(utils.getSpaces(64, '| Życie        ' + Math.floor(this.player.health) + '/' + this.player.maxHealth,
+		utils.log(utils.getSpaces(64, '+-------------'  + (this.turn == 'player' ? ' [TURA]' : ''), (this.turn == 'enemy' ? '[TURA] ' : '') + '-------------+'))
+		utils.log(utils.getSpaces(64, '| ' + this.player.name, this.enemy.name + ' |') )
+		utils.log(utils.getSpaces(64, '| Życie        ' + Math.floor(this.player.health) + '/' + this.player.maxHealth,
 		Math.floor(this.enemy.health) + '/' + this.enemy.maxHealth 
 			                                           + '        Życie |') )
-		console.log(utils.getSpaces(64, '| Siła         ' + this.player.strength,
+		utils.log(utils.getSpaces(64, '| Siła         ' + this.player.strength,
 			 this.enemy.strength                       + '         Siła |') )
-		console.log(utils.getSpaces(64, '| Zręczność    ' + this.player.dexterity, 
+		utils.log(utils.getSpaces(64, '| Zręczność    ' + this.player.dexterity, 
 			this.enemy.dexterity                       + '    Zręczność |') )
-		console.log(utils.getSpaces(64, '| Inteligencja ' + this.player.inteligence, 
+		utils.log(utils.getSpaces(64, '| Inteligencja ' + this.player.inteligence, 
 			this.enemy.inteligence                     + ' Inteligencja |') )
-		console.log(utils.getSpaces(64, '| Mana         ' + this.player.mana + '/' + this.player.maxMana, 
+		utils.log(utils.getSpaces(64, '| Mana         ' + this.player.mana + '/' + this.player.maxMana, 
 			this.enemy.mana + '/' + this.enemy.maxMana + '         Mana |') )
 		
-		console.log(utils.getSpaces(64, '+-------------', '-------------+'))
+		utils.log(utils.getSpaces(64, '+-------------', '-------------+'))
 	}
 
 	getOptions() {
@@ -65,7 +65,7 @@ class Fight {
 			this.turn = 'player';
 		}
 		else {
-			console.clear()
+			utils.clearLog()
 			this.display()
 			this.showOptions()
 		}
@@ -76,20 +76,20 @@ class Fight {
 
 		const effect = this.enemy.takeDamage(damage);
 		
-		console.clear()
+		utils.clearLog()
 		this.display()
 		if(effect.dodge)
-			console.log('['+ this.enemy.name +'] uniknął ataku (' + Math.floor(effect.damage) + ') obrażeń.')
+			utils.log('['+ this.enemy.name +'] uniknął ataku (' + Math.floor(effect.damage) + ') obrażeń.')
 		else
-			console.log('['+ this.player.name +'] zadał ' + Math.floor(effect.damage) + ' obrażeń.')
+			utils.log('['+ this.player.name +'] zadał ' + Math.floor(effect.damage) + ' obrażeń.')
 		
 		this.turn = 'wait';
 
 		if(this.enemy.health <= 0) {
 			this.over = true;
 			this.player.addExperience(this.enemy.experience)
-			console.log('> ' + this.enemy.name + ' pokonany');
-			console.log('> Walka została wygrana.');
+			utils.log('> ' + this.enemy.name + ' pokonany');
+			utils.log('> Walka została wygrana.');
 		}
 
 		setTimeout(() => {
@@ -106,13 +106,13 @@ class Fight {
 		const damage = this.enemy.useAbility(chosenAbility.name);
 		const effect = this.player.takeDamage(damage);
 
-		console.clear()
+		utils.clearLog()
 		this.display()
 
 		if(effect.dodge)
-			console.log('['+ this.player.name +'] uniknął ' + chosenAbility.name + ' (' + Math.floor(effect.damage) + ') obrażeń.')
+			utils.log('['+ this.player.name +'] uniknął ' + chosenAbility.name + ' (' + Math.floor(effect.damage) + ') obrażeń.')
 		else
-			console.log('['+ this.enemy.name +'] zadał ' + Math.floor(effect.damage) + ' obrażeń.')
+			utils.log('['+ this.enemy.name +'] zadał ' + Math.floor(effect.damage) + ' obrażeń.')
 		
 		if(this.player.health <= 0) {
 			this.player.die();

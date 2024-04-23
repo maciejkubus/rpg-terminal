@@ -26,10 +26,10 @@ const displayOptions = () => {
 		{ key: 'space', name: 'Rozglądaj się', do: () => callback(true)},
 	]
 
-	console.log('=========================')
-	console.log('Lokacja: ' + currentLocation.name)
-	console.log(currentLocation.description)
-	console.log('=========================')
+	utils.log('=========================')
+	utils.log('Lokacja: ' + currentLocation.name)
+	utils.log(currentLocation.description)
+	utils.log('=========================')
 
 	for(let i = 0; i <= currentLocation.routes.length - 1; i++) {
 		options.push({ 
@@ -40,21 +40,21 @@ const displayOptions = () => {
 	}
 
 	options.forEach(option => {
-		console.log(utils.formatKey(option.key) + option.name)
+		utils.log(utils.formatKey(option.key) + option.name)
 	})
 }
 
 const setLocation = (location, clear = true) => {
 	
 	if(clear) {
-		console.log('+-------------------+')
-		console.log('| Zmiana lokacji... |')
-		console.log('+-------------------+')
+		utils.log('+-------------------+')
+		utils.log('| Zmiana lokacji... |')
+		utils.log('+-------------------+')
 	}
 
 	setTimeout(() => {
 		if(clear)
-			console.clear()
+			utils.clearLog()
 	
 		player.location = location;
 		currentLocation = locations[location]
@@ -77,7 +77,7 @@ const setLocation = (location, clear = true) => {
 				]
 				
 				options.forEach(option => {
-					console.log(utils.formatKey(option.key) + option.name)
+					utils.log(utils.formatKey(option.key) + option.name)
 				})
 
 			});
@@ -85,7 +85,7 @@ const setLocation = (location, clear = true) => {
 			fight.setShowOptions(() => {
 				options = fight.getOptions();
 				options.forEach(option => {
-					console.log(utils.formatKey(option.key) + option.name)
+					utils.log(utils.formatKey(option.key) + option.name)
 				})
 			})
 
@@ -113,7 +113,7 @@ const main = () => {
 		
 		const option = options.find(o => o.key == key.name)
 		if(option) {
-			console.clear()
+			utils.clearLog()
 			option.do();
 		}
 

@@ -31,7 +31,7 @@ class Entity {
 		if(ability.can())
 			return ability.damage()
 		else
-			console.log('Nie można użyć umiejętności ' + ability.name);
+			utils.log('Nie można użyć umiejętności ' + ability.name);
 		return 0;
 	}
 

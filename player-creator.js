@@ -1,4 +1,5 @@
 const prompt = require("prompt-sync")({ sigint: true })
+const utils = require('./utils')
 
 class PlayerCreator {
 	strength = 10;
@@ -11,7 +12,7 @@ class PlayerCreator {
 	createdCallback = null;
 
 	askName() {
-		console.clear();
+		utils.clearLog();
 		this.name = prompt('Podaj imię swojej postaci: ')
 		this.render()
 	}
@@ -40,14 +41,14 @@ class PlayerCreator {
 	}
 
 	render() {
-		console.clear();
-		console.log('======================')
-		console.log('Wybrane imię: '+ this.name)
-		console.log('Pozostałe punkty: ' + this.points)
-		console.log(this.select(0) + ' SIŁA         ' + this.progress(this.strength))
-		console.log(this.select(1) + ' ZRĘCZNOŚĆ    ' + this.progress(this.dexterity))
-		console.log(this.select(2) + ' INTELIGENCJA ' + this.progress(this.inteligence))
-		console.log("[ENTER] Utwórz")
+		utils.clearLog();
+		utils.log('======================')
+		utils.log('Wybrane imię: '+ this.name)
+		utils.log('Pozostałe punkty: ' + this.points)
+		utils.log(this.select(0) + ' SIŁA         ' + this.progress(this.strength))
+		utils.log(this.select(1) + ' ZRĘCZNOŚĆ    ' + this.progress(this.dexterity))
+		utils.log(this.select(2) + ' INTELIGENCJA ' + this.progress(this.inteligence))
+		utils.log("[ENTER] Utwórz")
 
 		setTimeout(() => {
 			if(!this.leave)

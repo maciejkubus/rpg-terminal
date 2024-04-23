@@ -36,18 +36,18 @@ class Player extends Entity {
 	}
 
 	displayStat(space = true) {
-		console.log('+=================================')
-		console.log('| Imię: ' + this.name)
-		console.log('| Level: ' + this.level);
-		console.log('| Doświadczenie: ' + this.experience + ' / ' + this.needToLevelUp())
-		console.log('| Życie: ' + this.health + ' / ' + this.maxHealth)
-		console.log('| Punkty nauki: ' + this.learningPoints)
-		console.log('| Siła: ' + this.strength)
-		console.log('| Zręczność: ' + this.dexterity)
-		console.log('| Inteligencja: ' + this.inteligence)
-		console.log('+=================================')
+		utils.log('+=================================')
+		utils.log('| Imię: ' + this.name)
+		utils.log('| Level: ' + this.level);
+		utils.log('| Doświadczenie: ' + this.experience + ' / ' + this.needToLevelUp())
+		utils.log('| Życie: ' + this.health + ' / ' + this.maxHealth)
+		utils.log('| Punkty nauki: ' + this.learningPoints)
+		utils.log('| Siła: ' + this.strength)
+		utils.log('| Zręczność: ' + this.dexterity)
+		utils.log('| Inteligencja: ' + this.inteligence)
+		utils.log('+=================================')
 		if(space)
-			console.log('Naciśnij [space] żeby kontynuować.')
+			utils.log('Naciśnij [space] żeby kontynuować.')
 	}
 
 	getStatOption() {
@@ -61,7 +61,7 @@ class Player extends Entity {
 	}
 
 	addExperience(value) {
-		console.log('[' + this.name + '] zdobył ' + value + ' punktów doświadczenia.')
+		utils.log('[' + this.name + '] zdobył ' + value + ' punktów doświadczenia.')
 		this.experience += value;
 		this.checkLevelUp();
 	}
@@ -78,7 +78,7 @@ class Player extends Entity {
 	levelUp() {
 		this.level++;
 		this.learningPoints += 10;
-		console.log(">>> Level up | " + this.name + ' is ' + this.level + ' level now!');
+		utils.log(">>> Level up | " + this.name + ' is ' + this.level + ' level now!');
 	}
 
 	getAbilities() {
@@ -110,10 +110,10 @@ class Player extends Entity {
 
 	die() {
 		this.displayStat(false);
-		console.log('| ')
-		console.log('| Koniec.')
-		console.log('| ')
-		console.log('+=================================')
+		utils.log('| ')
+		utils.log('| Koniec.')
+		utils.log('| ')
+		utils.log('+=================================')
 		process.exit();
 	}
 

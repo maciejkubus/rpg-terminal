@@ -1,5 +1,6 @@
 const utils = require('./utils')
-const Entity = require('./entity')
+const Entity = require('./entity');
+const Inventory = require('./inventory');
 class Player extends Entity {
 	health = 100;
 	maxHealth = 100;
@@ -11,12 +12,18 @@ class Player extends Entity {
 	location = 'village';
 	experience = 0;
 	level = 1;
+	inventory = null;
 
 	constructor() {
 		super(100, 10, 10, 10)
 
 		this.mana = 100;
 		this.maxMana = 100;
+
+		this.inventory = new Inventory([
+			{ name: 'Health Potion', quantity: 5, callback: () => this.regenHP(10), description: '+10 życia'},
+			{ name: 'Mana Potion', quantity: 5, callback: () => this.regenMana(10), description: '+10 mana'},
+		]);
 
 		this.abilities.push({
 			name: 'Jeb w łeb',
@@ -33,6 +40,29 @@ class Player extends Entity {
 			damage: this.skillBasicInt.bind(this),
 			can: () => this.mana >= 10, 
 		})
+
+		utils.afterClear = () => {
+			if(!this.name) return;
+
+			utils.log(
+				utils.getSpaces(
+					64, 
+					'⬜ ' + this.name + ' ' + this.level + ' lvl.',
+					'HP:' + Math.floor(this.health) + '/' + this.maxHealth + ' ⬜'
+				))
+		}
+	}
+
+	regenHP(value) {
+		this.health += value;
+		if(this.health > this.maxHealth)
+			this.health = this.maxHealth
+	}
+
+	regenMana(value) {
+		this.mana += value;
+		if(this.mana > this.maxMana)
+			this.mana = this.maxHealth
 	}
 
 	displayStat(space = true) {
@@ -41,6 +71,7 @@ class Player extends Entity {
 		utils.log('| Level: ' + this.level);
 		utils.log('| Doświadczenie: ' + this.experience + ' / ' + this.needToLevelUp())
 		utils.log('| Życie: ' + this.health + ' / ' + this.maxHealth)
+		utils.log('| Mana: ' + this.mana + ' / ' + this.maxMana)
 		utils.log('| Punkty nauki: ' + this.learningPoints)
 		utils.log('| Siła: ' + this.strength)
 		utils.log('| Zręczność: ' + this.dexterity)

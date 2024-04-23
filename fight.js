@@ -43,7 +43,6 @@ class Fight {
 		else {
 			return [
 				...this.player.abilitiesOptions(this.playerTurn.bind(this)),
-				{ key: 'space', name: 'Pomiń turę', do: this.play.bind(this) },
 			]
 		}
 	}

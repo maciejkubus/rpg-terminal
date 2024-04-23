@@ -45,16 +45,17 @@ class Entity {
 
 	takeDamage(damage) {
 		const dodge = (this.dexterity - 5) > utils.random(0, 100);
+		const floorDamage = parseInt(damage);
 
 		if(!dodge)	
-			this.health -= damage;
+			this.health -= floorDamage;
 
 		if(this.health < 0)
 			this.health = 0;
 
 		return {
 			dodge,
-			damage,
+			damage: floorDamage,
 		}
 	}
 }

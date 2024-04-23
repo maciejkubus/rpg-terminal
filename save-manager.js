@@ -1,4 +1,5 @@
-const fs = require('fs')
+const fs = require('fs');
+const utils = require('./utils');
 
 class SaveManager {
 	filename = 'save.json';
@@ -21,17 +22,22 @@ class SaveManager {
 			level
 		} = player
 		fs.writeFileSync(this.filename, JSON.stringify({
-			health,
-			maxHealth,
-			strength,
-			dexterity,
-			inteligence,
-			name,
-			learningPoints,
-			location,
-			experience,
-			level
+			player: {
+				health,
+				maxHealth,
+				strength,
+				dexterity,
+				inteligence,
+				name,
+				learningPoints,
+				location,
+				experience,
+				level
+			},
+			inventory: player.inventory.save()
 		}))
+
+		utils.log('Gra zapisana do pliku: ' + this.filename)
 	}
 
 	load() {

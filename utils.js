@@ -19,6 +19,33 @@ const utils = {
 		};
 		return spaces + string;
 	},
+	decorString: (width, char, first, last) => {
+		let chars = '';
+		for(let i = 0; i <= width; i++) {
+			if(first && i == 0)
+				chars += first
+			else if(last && i == width)
+				chars += last
+			else
+				chars += char
+		}
+		if(first) chars[0] = first
+		if(last) chars[chars.length - 1] = last
+		return chars;
+	},
+	center: (width, char, string, space = ' ') => {
+		const size = (width - string.length)/2;
+		let chars = char + (size % 2 == 1 ? space : '');
+		for(let i = 1; i < size; i++) {
+			chars += space
+		}
+		chars += string;
+		for(let i = 1; i < size; i++) {
+			chars += space
+		}
+		chars += char;
+		return chars
+	},
 	formatKey: (key) => {
 		const spaces = key != 'space' ? '    ' : '';
 		const upperCase = (key + "").toUpperCase()
@@ -26,6 +53,7 @@ const utils = {
 		return spaces + "[" + upperCase + "] - ";
 	},
 	logIndex: 0,
+	afterClear: () => {},
 	log(message) {
 		console.log(message)
 		utils.logIndex++;
@@ -33,6 +61,7 @@ const utils = {
 	clearLog() {
 		utils.logIndex = 0;
 		console.clear()
+		utils.afterClear();
 	}
 }
 

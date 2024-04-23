@@ -15,14 +15,30 @@ let currentLocation = locations[player.location]
 let options = []
 
 const displayOptions = () => {
-	const callback = (clear = false) => setLocation(locations[player.location].key, clear)
+	const callback = (clear = false, noFight = false) => setLocation(locations[player.location].key, clear, noFight)
 	options = [
-		player.getStatOption(),
 		{ key: 'q', name: 'opuść', do: callback},
 		saveManager.getOption(() => { 
 			saveManager.save(player)
-			callback();
+			callback(false, true);
 		}),
+		player.getStatOption(),
+		{ 
+			key: 'i', 
+			name: 'Ekwipunek', 
+			do: () => {
+				options = [];
+				options = [
+					...player.inventory.getOptions(() => {
+						utils.clearLog();
+						displayOptions();
+					}),
+					{ key: 'space', name: 'Wróć', do: displayOptions}
+				];
+				options.forEach(option => {
+					utils.log(utils.formatKey(option.key) + option.name)
+				})
+		}},
 		{ key: 'space', name: 'Rozglądaj się', do: () => callback(true)},
 	]
 
@@ -44,12 +60,12 @@ const displayOptions = () => {
 	})
 }
 
-const setLocation = (location, clear = true) => {
+const setLocation = (location, clear = true, noFight = false) => {
 	
 	if(clear) {
-		utils.log('+-------------------+')
-		utils.log('| Zmiana lokacji... |')
-		utils.log('+-------------------+')
+		utils.log(utils.decorString(64, '-', '+', '+'))
+		utils.log(utils.center(64, '|', 'Zmiana lokacji'))
+		utils.log(utils.decorString(64, '-', '+', '+'))
 	}
 
 	setTimeout(() => {
@@ -62,7 +78,7 @@ const setLocation = (location, clear = true) => {
 		const fightChance = currentLocation.monsterChance * 100
 		const fight = utils.random(0, 100) <= fightChance;
 
-		if(fight) {
+		if(fight && !noFight) {
 			options = []
 			
 			const monsterType = monsterSpawner.randomMonsterFromLocation(currentLocation);
@@ -128,9 +144,10 @@ const main = () => {
 	})
 	if(saveManager.loadingAvailable()){
 		const data = saveManager.load();
-		for (const key in data) {
-			player[key] = data[key];
+		for (const key in data.player) {
+			player[key] = data.player[key];
 		}
+		player.inventory.load(data.inventory)
 		setLocation(player.location)
 	}
 	else {

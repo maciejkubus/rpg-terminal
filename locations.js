@@ -1,3 +1,5 @@
+const npc = require('./npcs');
+
 const locations = {
 	village: {
 		key: 'village',
@@ -5,10 +7,13 @@ const locations = {
 		description: 'Obecnie znajdujesz się w skromnej wiosce.',
 		routes: [
 			'forest',
-			'road'
+			'road',
 		],
 		monsterChance: 0,
-		monsters: []
+		monsters: [],
+		npcs: [
+			npc.potionMaker
+		]
 	},
 	forest: {
 		key: 'forest',
@@ -20,7 +25,8 @@ const locations = {
 		monsterChance: 0.25,
 		monsters: [
 			'Wolf',
-		]
+		],
+		npcs: []
 	},
 	'dark-forest': {
 		key: 'dark-forest',
@@ -35,7 +41,8 @@ const locations = {
 			'Goblin Scout',
 			'Goblin Shaman',
 			'Wolf',
-		]
+		],
+		npcs: []
 	},
 	road: {
 		key: 'road',
@@ -50,7 +57,8 @@ const locations = {
 		monsters: [
 			'Goblin Warrior',
 			'Goblin Scout',
-		]
+		],
+		npcs: []
 	},
 	beach: {
 		key: 'beach',
@@ -63,7 +71,8 @@ const locations = {
 		monsters: [
 			'Crab',
 			'Angry Crab'
-		]
+		],
+		npcs: []
 	},
 	'trade': {
 		key: 'trade',
@@ -77,7 +86,8 @@ const locations = {
 		monsters: [
 			'Goblin Warrior',
 			'Goblin Scout',
-		]
+		],
+		npcs: []
 	},
 	mountains: {
 		key: 'mountains',
@@ -92,7 +102,8 @@ const locations = {
 			'Goblin Scout',
 			'Goblin Shaman',
 			'Orc'
-		]
+		],
+		npcs: []
 	}
 }
 

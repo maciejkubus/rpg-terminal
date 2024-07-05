@@ -17,7 +17,7 @@ let options = []
 const displayOptions = () => {
 	const callback = (clear = false, noFight = false) => setLocation(locations[player.location].key, clear, noFight)
 	options = [
-		{ key: 'q', name: 'opuść', do: callback},
+		{ key: 'q', name: 'Wyjdź z gry.', do: callback},
 		saveManager.getOption(() => { 
 			saveManager.save(player)
 			callback(false, true);
@@ -47,11 +47,29 @@ const displayOptions = () => {
 	utils.log(currentLocation.description)
 	utils.log('=========================')
 
+	let keyIndex = 0;
 	for(let i = 0; i <= currentLocation.routes.length - 1; i++) {
 		options.push({ 
 			key: i, 
 			name: locations[currentLocation.routes[i]].name, 
 			do: () => setLocation(currentLocation.routes[i]) 
+		})
+		keyIndex = i;
+	}
+	for(let i = 0; i <= currentLocation.npcs.length - 1; i++) {
+		options.push({
+			key: i + keyIndex + 1,
+			name: currentLocation.npcs[i].name,
+			do: () => {
+				utils.log('=========================')
+				utils.log(currentLocation.npcs[i].name)
+				utils.log(currentLocation.npcs[i].description)
+				utils.log('=========================')
+				options = currentLocation.npcs[i].getOptions(player)
+				options.forEach(option => {
+					utils.log(utils.formatKey(option.key) + option.name)
+				})
+			}
 		})
 	}
 

@@ -87,6 +87,7 @@ class Fight {
 		if(this.enemy.health <= 0) {
 			this.over = true;
 			this.player.addExperience(this.enemy.experience)
+			this.player.addMoney(this.enemy.gold);
 			utils.log('> ' + this.enemy.name + ' pokonany');
 			utils.log('> Walka została wygrana.');
 		}

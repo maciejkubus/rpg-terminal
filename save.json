@@ -1,1 +1,1 @@
-{"player":{"health":91,"maxHealth":100,"strength":13,"dexterity":15,"inteligence":12,"name":"Maciek","learningPoints":20,"location":"mountains","experience":35,"level":3},"inventory":[{"name":"Health Potion","quantity":15},{"name":"Mana Potion","quantity":15}]}
+{"player":{"health":68,"maxHealth":100,"strength":14,"dexterity":14,"inteligence":12,"name":"Maciek","learningPoints":20,"location":"village","experience":35,"level":3,"money":51},"inventory":[{"name":"Health Potion","quantity":5},{"name":"Mana Potion","quantity":5}]}

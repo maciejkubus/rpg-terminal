@@ -35,6 +35,12 @@ class Inventory {
 		return item;
 	}
 
+	increasQuantity(name, quantity) {
+		const item = this.getItem(name);
+		item.quantity += quantity;
+		return item;
+	}
+
 	setCallback(name, callback) {
 		const item = this.getItem(name);
 		item.callback = callback;

@@ -19,7 +19,8 @@ class SaveManager {
 			learningPoints,
 			location,
 			experience,
-			level
+			level,
+			money
 		} = player
 		fs.writeFileSync(this.filename, JSON.stringify({
 			player: {
@@ -32,7 +33,8 @@ class SaveManager {
 				learningPoints,
 				location,
 				experience,
-				level
+				level,
+				money
 			},
 			inventory: player.inventory.save()
 		}))

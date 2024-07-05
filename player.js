@@ -13,6 +13,7 @@ class Player extends Entity {
 	experience = 0;
 	level = 1;
 	inventory = null;
+	money = 0;
 
 	constructor() {
 		super(100, 10, 10, 10)
@@ -48,9 +49,29 @@ class Player extends Entity {
 				utils.getSpaces(
 					64, 
 					'⬜ ' + this.name + ' ' + this.level + ' lvl.',
-					'HP:' + Math.floor(this.health) + '/' + this.maxHealth + ' ⬜'
+					'HP:' + Math.floor(this.health) + '/' + this.maxHealth + '| Gold: ' + this.money + ' ⬜'
 				))
 		}
+	}
+
+	setMoney(value) {
+		this.money = value;
+		if(this.money < 0)
+			this.money = 0;
+	}
+
+	pay(value) {
+		if(value <= this.money) {
+			this.money -= value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	addMoney(value) {
+		this.money += value;
+		utils.log('[' + this.name + '] zdobył ' + value + ' złota.')
 	}
 
 	regenHP(value) {
